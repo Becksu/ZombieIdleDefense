@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44027d8eb412bd64eb3965b944530ebe, type: 3}
+  m_Name: DataSolider
+  m_EditorClassIdentifier: 
+  soliderInfors:
+  - damageSoliderDT: 1
+    rangerSoliderDT: 1
+    fireRateSoliderDT: 2
+    starSoliderDT: 0
+    levelSoliderDT: 1
+    soliderType: 1
+  - damageSoliderDT: 2
+    rangerSoliderDT: 1
+    fireRateSoliderDT: 1
+    starSoliderDT: 0
+    levelSoliderDT: 1
+    soliderType: 2
+  - damageSoliderDT: 3
+    rangerSoliderDT: 3
+    fireRateSoliderDT: 2
+    starSoliderDT: 0
+    levelSoliderDT: 1
+    soliderType: 3
+  - damageSoliderDT: 2
+    rangerSoliderDT: 2
+    fireRateSoliderDT: 1
+    starSoliderDT: 0
+    levelSoliderDT: 1
+    soliderType: 4
+  - damageSoliderDT: 1
+    rangerSoliderDT: 3
+    fireRateSoliderDT: 4
+    starSoliderDT: 0
+    levelSoliderDT: 1
+    soliderType: 5
+  - damageSoliderDT: 1
+    rangerSoliderDT: 1
+    fireRateSoliderDT: 5
+    starSoliderDT: 0
+    levelSoliderDT: 1
+    soliderType: 6

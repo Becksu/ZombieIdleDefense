@@ -7,17 +7,15 @@ public class Player : ABCharacter
     public int bulletCap;
     public int damage;
     public float reload;
-    public PoolType poolType;
-    public Transform weaponPoints;
-    public Enemy target;
+    public float ranger;
 
-    private void Awake()
-    {
-        OnAwake();
-    }
+    public int maxDamage;
+    public int maxReload;
+    public int maxBulletCap;
+
     void Start()
     {
-
+        OnInit();
     }
 
     // Update is called once per frame
@@ -25,28 +23,23 @@ public class Player : ABCharacter
     {
         OnUpdate();
     }
-    public void OnAwake()
-    {
-        tF = transform;
-        weaponPoints = transform.Find("WeaponPoints");
-    }
+
     public void OnInit()
     {
-        //bulletCap,reload,damage from data
-
+        bulletCap = DataManager.Instance.bulletCapPlayerDT;
+        damage = DataManager.Instance.damagePlayerDT;
+        reload = DataManager.Instance.reloadPlayerDT;
     }
     public void OnUpdate()
     {
         CheckAndAttack();
     }
 
-
-
     public override void Atack()
     {
         Enemy enemy = Plane.Instance.GetEnemy();
         if (enemy == null) return;
-        if (enemy.DistanceToLose() > 10 && enemy.isDie) return;
+        if (enemy.DistanceToLose() >= ranger && enemy.isDie) return;
         GameObject go = ObjectPooling.Instance.GetGameObject(poolType, weaponPoints.position);
         Weapon weapon = go.GetComponent<Weapon>();
         weapon.tF.LookAt(enemy.tF.position - tF.position);
@@ -54,7 +47,7 @@ public class Player : ABCharacter
         weapon.Direction(enemy.tF.position);
         bulletCap--;
     }
-    public void CheckAndAttack()
+    public override void CheckAndAttack()
     {
         if (Input.GetMouseButtonDown(0) && bulletCap >= 1)
         {

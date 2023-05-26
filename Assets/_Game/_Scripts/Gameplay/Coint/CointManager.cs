@@ -4,21 +4,19 @@ using UnityEngine;
 
 public class CointManager : Singleton<CointManager>
 {
-    public delegate void AddScore(float a);
+    public delegate void AddScore(float t);
     public event AddScore AddScoreWave;
     public float coint;
     void Start()
     {
-
-        AddScoreWave += CointWave;
+        AddScoreWave += AddCoint;
     }
-
-    public void RegisnEvent()
+    public void EventCoint(float a)
     {
-        AddScoreWave += CointWave;
+        AddScoreWave?.Invoke(a);
     }
-    public void CointWave(float coins)
+    public void AddCoint(float coint)
     {
-        this.coint += coins;
+        this.coint += coint;
     }
 }

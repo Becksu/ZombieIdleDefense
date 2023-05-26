@@ -5,15 +5,16 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-
+    public delegate void WinGame();
+    public event WinGame OnWinGame;
     public Transform tF;
     public NavMeshAgent agentMeshEnemy;
+    public ParticleSystem vfxHeath;
     public LayerMask layerLoseZone;
     public float Hp;
     public float speed;
     public float price;
     public bool isDie => Hp <= 0;
-    protected CointManager cointManager;
     private void Awake()
     {
         OnAwake();
@@ -31,17 +32,17 @@ public class Enemy : MonoBehaviour
     {
         tF = transform;
         agentMeshEnemy = GetComponent<NavMeshAgent>();
-        cointManager = CointManager.Instance;
-
+        Transform go = transform.Find("VFX_Heath");
+        vfxHeath = go.GetComponent<ParticleSystem>();
     }
     public virtual void OnInit()
     {
-        Hp = 100;
+        Hp = 100 + DataManager.Instance.waveGameDT;
+        speed = 1;
+        agentMeshEnemy.speed = speed + DataManager.Instance.waveGameDT / 4;
+        price = DataManager.Instance.waveGameDT * 1000;
         Collider collider = GetComponent<Collider>();
         collider.enabled = true;
-        //sped from data
-        //price from data
-        //agentMeshEnemy.speed = speedf;
     }
     protected virtual void OnUpdate()
     {
@@ -57,11 +58,12 @@ public class Enemy : MonoBehaviour
         RaycastHit hit;
         float distance = 0;
 
-        if (Physics.Raycast(tF.position, Vector3.forward * 2f, out hit, 20f, layerLoseZone))
+        if (Physics.Raycast(tF.position, Vector3.forward * 2f, out hit, 40f, layerLoseZone))
         {
             Vector3 targetLoseZone = Vector3.Scale(hit.collider.transform.position, Vector3.forward);
             Vector3 posCurren = Vector3.Scale(tF.position, Vector3.forward);
             distance = Vector3.Distance(posCurren, targetLoseZone);
+
             return distance;
         }
         return 0;
@@ -73,15 +75,22 @@ public class Enemy : MonoBehaviour
             Hp -= damage;
             if (isDie)
             {
-                //cointManager.AddScoreWave?.Invoke(price);
-                Collider collider = GetComponent<Collider>();
-                collider.enabled = false;
-                Invoke(nameof(CharacterDie), 2f);
+                EnemyDie();
+                Invoke(nameof(EnemyReturn), 2f);
             }
         }
     }
-
-    public void CharacterDie()
+    public void EnemyDie()
+    {
+        vfxHeath.Play();
+        CointManager.Instance.EventCoint(price);
+        Collider collider = GetComponent<Collider>();
+        collider.enabled = false;
+        Level.Instance.enemyCounts--;
+        if (Level.Instance.enemyCounts > 0) return;
+        OnWinGame?.Invoke();
+    }
+    public void EnemyReturn()
     {
         gameObject.SetActive(false);
     }

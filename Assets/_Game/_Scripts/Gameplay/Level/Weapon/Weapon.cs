@@ -34,7 +34,7 @@ public class Weapon : MonoBehaviour
     }
     public virtual void Move()
     {
-        Invoke(nameof(IsTouch), 2f);
+        Invoke(nameof(IsTouch), 1.5f);
     }
     public virtual void IsTouch()
     {

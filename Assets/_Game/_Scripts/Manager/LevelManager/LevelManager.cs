@@ -35,6 +35,10 @@ public class LevelManager : Singleton<LevelManager>
     {
         coints += coint;
     }
+    public void WinGame()
+    {
+        Debug.Log("Win");
+    }
     public void LoseGame()
     {
         Debug.Log("LoseGame");
