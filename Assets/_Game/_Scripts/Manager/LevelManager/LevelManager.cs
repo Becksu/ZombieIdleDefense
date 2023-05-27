@@ -29,6 +29,7 @@ public class LevelManager : Singleton<LevelManager>
     public void OnInit()
     {
         loseZone.OnWinGame += LoseGame;
+        UIManager.menuUI.gamePlayerEvent += GamePlayStart;
     }
 
     public void AddScore(float coint)
@@ -42,6 +43,11 @@ public class LevelManager : Singleton<LevelManager>
     public void LoseGame()
     {
         Debug.Log("LoseGame");
+    }
+    public void GamePlayStart()
+    {
+        GameManager.Instance.ChangStateGame(GameState.Gameplay);
+       // Camera.Instance.GameplayCamera(0f, 5f);
     }
     public void GetLoseZone(LoseZone loseZone)
     {

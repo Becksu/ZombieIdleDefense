@@ -19,10 +19,6 @@ public class Enemy : MonoBehaviour
     {
         OnAwake();
     }
-    void Start()
-    {
-        OnInit();
-    }
 
     void Update()
     {
@@ -40,7 +36,7 @@ public class Enemy : MonoBehaviour
         Hp = 100 + DataManager.Instance.waveGameDT;
         speed = 1;
         agentMeshEnemy.speed = speed + DataManager.Instance.waveGameDT / 4;
-        price = DataManager.Instance.waveGameDT * 1000;
+        price = DataManager.Instance.waveGameDT * 500;
         Collider collider = GetComponent<Collider>();
         collider.enabled = true;
     }
@@ -52,7 +48,6 @@ public class Enemy : MonoBehaviour
             Move();
         }
     }
-
     public float DistanceToLose()
     {
         RaycastHit hit;
@@ -87,6 +82,7 @@ public class Enemy : MonoBehaviour
         Collider collider = GetComponent<Collider>();
         collider.enabled = false;
         Level.Instance.enemyCounts--;
+        Level.Instance.enemys.Remove(this);
         if (Level.Instance.enemyCounts > 0) return;
         OnWinGame?.Invoke();
     }

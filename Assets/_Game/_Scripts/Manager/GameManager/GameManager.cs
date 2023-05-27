@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public enum GameState
 {
-    // Start is called before the first frame update
-    void Start()
+    Menu,
+    Gameplay,
+    Units,
+    Shop,
+    BaseCamp
+}
+public class GameManager : Singleton<GameManager>
+{
+
+    protected GameState gameState;
+    public void ChangStateGame(GameState state)
     {
-        
+        gameState = state;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsState(GameState state)
     {
-        
+        return gameState == state;
     }
 }
