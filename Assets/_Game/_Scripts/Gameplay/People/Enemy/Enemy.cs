@@ -3,17 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum EnemyType
+{
+    None,
+    ZombieDefaul,
+    ZombieRed,
+    Crab,
+    Boss
+}
 public class Enemy : MonoBehaviour
 {
+    protected float hpData;
+    protected float speedData;
+    protected float priceData;
     public delegate void WinGame();
     public event WinGame OnWinGame;
     public Transform tF;
     public NavMeshAgent agentMeshEnemy;
     public ParticleSystem vfxHeath;
     public LayerMask layerLoseZone;
+    public EnemyType enemyType;
+    public PoolType enemyPoolType;
     public float Hp;
     public float speed;
     public float price;
+    public int star;
     public bool isDie => Hp <= 0;
     private void Awake()
     {
@@ -30,22 +44,39 @@ public class Enemy : MonoBehaviour
         agentMeshEnemy = GetComponent<NavMeshAgent>();
         Transform go = transform.Find("VFX_Heath");
         vfxHeath = go.GetComponent<ParticleSystem>();
+       
+    }
+    public void GetData()
+    {
+        for(int i = 0; i < ResourcesManager.Instance.dataEnemy.enemyInfos.Length; i++)
+        {
+            EnemyInfo info = ResourcesManager.Instance.dataEnemy.enemyInfos[i];
+            if(info.enemyType == enemyType)
+            {
+                hpData = info.hp;
+                speedData = info.speed;
+                priceData = info.price;
+                break;
+            }
+        }
     }
     public virtual void OnInit()
     {
-        Hp = 100 + DataManager.Instance.waveGameDT;
-        speed = 1;
+        GetData();
+        Hp = hpData + DataManager.Instance.waveGameDT;
+        speed = speedData;
         agentMeshEnemy.speed = speed + DataManager.Instance.waveGameDT / 4;
-        price = DataManager.Instance.waveGameDT * 500;
+        price = DataManager.Instance.waveGameDT * priceData;
         Collider collider = GetComponent<Collider>();
         collider.enabled = true;
+        Move();
     }
     protected virtual void OnUpdate()
     {
         if(isDie) StopMove();
         else
         {
-            Move();
+           //Move();
         }
     }
     public float DistanceToLose()

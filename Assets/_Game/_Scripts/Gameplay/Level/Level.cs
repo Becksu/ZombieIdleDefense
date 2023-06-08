@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class Level : Singleton<Level>
 {
+    protected int index;
     public int level;
     public float enemyCounts;
     public float enemyCountsMax;
-    public GameObject enemyPrefab;
     public List<Enemy> enemys = new List<Enemy>();
 
 
     private void Start()
     {
-        enemyCountsMax = DataManager.Instance.waveGameDT * 5 / 3 + 5;
+       // OnInit();
+    }
+
+    public void OnInit()
+    {
+        index = 0;
+        enemyCountsMax = ResourcesManager.Instance.levelInfor.levelInfo[level].poolType.Length; //DataManager.Instance.waveGameDT * 5 / 3 + 5;
         enemyCounts = enemyCountsMax;
-        InvokeRepeating(nameof(SpawnerEnemy),0f, 1f);
+        InvokeRepeating(nameof(SpawnerEnemy), 0f, 1f);
     }
     public void SpawnerEnemy()
     {
         float posX = Random.Range(-12, 13);
         float posZ = Random.Range(-28, -30);
-        GameObject go = ObjectPooling.Instance.GetGameObject(PoolType.Enemy, new Vector3(posX, 0, posZ));
+
+        GameObject go = ObjectPooling.Instance.GetGameObject(GetTypeEnemy(level), new Vector3(posX, 0, posZ));
         Enemy enemy = go.GetComponent<Enemy>();
         enemy.OnInit();
         enemys.Add(enemy);
@@ -30,13 +37,20 @@ public class Level : Singleton<Level>
         if (enemyCountsMax > 0) return;
         CancelInvoke();
     }
-    public void NextWave()
+    public PoolType GetTypeEnemy(int level)
     {
-        DataManager.Instance.waveGameDT++;
-
+        PoolType poolType = ResourcesManager.Instance.levelInfor.levelInfo[level].poolType[index];
+        index++;
+        return poolType;
     }
-    public void NextLevel()
+    public void DespawnLevel()
     {
-
+        for(int i = 0; i < enemys.Count; i++)
+        {
+            enemys[i].Hp = 0;
+            ObjectPooling.Instance.ReturnGameObject(enemys[i].enemyPoolType, enemys[i].gameObject);
+        }
+        enemys.Clear();
+        Destroy(gameObject);
     }
 }

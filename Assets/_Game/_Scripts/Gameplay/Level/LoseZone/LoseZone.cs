@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LoseZone : MonoBehaviour
 {
-    public delegate void WinGameEvent();
-    public event WinGameEvent OnWinGame;
+    public delegate void LoseGameEvent();
+    public event LoseGameEvent OnLoseGame;
     private void Awake()
     {
         LevelManager.Instance.GetLoseZone(this);
@@ -15,7 +15,7 @@ public class LoseZone : MonoBehaviour
     {
         if (other.CompareTag(Constans.TAG_ENEMY))
         {
-            OnWinGame?.Invoke();
+            OnLoseGame?.Invoke();
         }
     }
 

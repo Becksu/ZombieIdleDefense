@@ -8,7 +8,9 @@ public enum GameState
     Gameplay,
     Units,
     Shop,
-    BaseCamp
+    Upgrades,
+    BaseCamp,
+    FinishGame
 }
 public class GameManager : Singleton<GameManager>
 {

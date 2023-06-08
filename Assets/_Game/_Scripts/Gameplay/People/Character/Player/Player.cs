@@ -16,6 +16,7 @@ public class Player : ABCharacter
     void Start()
     {
         OnInit();
+        reload = 3;
     }
 
     // Update is called once per frame
@@ -26,12 +27,14 @@ public class Player : ABCharacter
 
     public void OnInit()
     {
+        reload = 3;
         bulletCap = DataManager.Instance.bulletCapPlayerDT;
         damage = DataManager.Instance.damagePlayerDT;
-        reload = DataManager.Instance.reloadPlayerDT;
+        reload -= DataManager.Instance.reloadPlayerDT;
     }
     public void OnUpdate()
     {
+        if (!GameManager.Instance.IsState(GameState.Gameplay)||GameManager.Instance.IsState(GameState.FinishGame)) return;
         CheckAndAttack();
     }
 
@@ -40,7 +43,7 @@ public class Player : ABCharacter
         Enemy enemy = Plane.Instance.GetEnemy();
         if (enemy == null) return;
         if (enemy.DistanceToLose() >= ranger && enemy.isDie) return;
-        GameObject go = ObjectPooling.Instance.GetGameObject(poolType, weaponPoints.position);
+        GameObject go = ObjectPooling.Instance.GetGameObject(weaponType, weaponPoints.position);
         Weapon weapon = go.GetComponent<Weapon>();
         weapon.tF.LookAt(enemy.tF.position - tF.position);
         weapon.damage = damage;

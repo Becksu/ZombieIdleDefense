@@ -6,7 +6,10 @@ public enum PoolType
 {
     None,
     Bullet,
-    Enemy
+    ZombieDefaul,
+    ZombieRed,
+    Crab,
+    Boss
 
 }
 public class ObjectPooling : Singleton<ObjectPooling>

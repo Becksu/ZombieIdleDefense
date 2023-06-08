@@ -5,6 +5,8 @@ using UnityEngine;
 public class DataManager : Singleton<DataManager>
 {
 
+    public float coints;
+
     public  float waveGameDT;
     public  int levelGameDT;
 

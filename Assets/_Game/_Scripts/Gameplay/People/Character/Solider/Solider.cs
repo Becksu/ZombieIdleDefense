@@ -33,6 +33,8 @@ public class Solider : ABCharacter
     }
     private void Update()
     {
+        if (!GameManager.Instance.IsState(GameState.Gameplay) || GameManager.Instance.IsState(GameState.FinishGame)) return;
+
         OnUpdate();
     }
     public void GetData()
@@ -66,8 +68,9 @@ public class Solider : ABCharacter
     {
         Enemy enemy = Plane.Instance.GetEnemy();
         if (enemy == null) return;
+        if (enemy.isDie) return;
         if (enemy.DistanceToLose() > ranger) return;
-        GameObject go = ObjectPooling.Instance.GetGameObject(poolType, weaponPoints.position);
+        GameObject go = ObjectPooling.Instance.GetGameObject(weaponType, weaponPoints.position);
         Weapon weapon = go.GetComponent<Weapon>();
         weapon.tF.LookAt(enemy.tF.position - tF.position);
         weapon.damage = damage;

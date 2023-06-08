@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class ABCharacter : MonoBehaviour
 {
     public Transform tF;
-    public PoolType poolType;
+    public PoolType weaponType;
     public Transform weaponPoints;
 
 

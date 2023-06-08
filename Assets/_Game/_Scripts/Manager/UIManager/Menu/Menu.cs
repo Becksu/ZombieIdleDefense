@@ -41,7 +41,7 @@ public class Menu : MonoBehaviour
 
     public void BntsStart()
     {
-
+        
         if (UIManager.gameplayUI != null)
         {
             UIManager.gameplayUI.gameObject.SetActive(true);
@@ -52,6 +52,7 @@ public class Menu : MonoBehaviour
             UIManager.gameplayUI = Instantiate(go, UIManager.Instance.tf).GetComponent<Gameplay>();
         }
         UIManager.Instance.CloseMenuUi();
+
         gamePlayerEvent?.Invoke();
     }
     public void BntsRandomSolider()
@@ -61,7 +62,17 @@ public class Menu : MonoBehaviour
     public void BntsUpgrades()
     {
         Debug.Log("BntsUpgrades");
-
+        GameManager.Instance.ChangStateGame(GameState.Upgrades);
+        UIManager.Instance.CloseMenuUi();
+        if (UIManager.upgradeUI == null)
+        {
+            GameObject go = Resources.Load<GameObject>("UI/Canvas-Upgrades");
+            UIManager.upgradeUI = Instantiate(go, UIManager.Instance.tf).GetComponent<Upgrades>();
+        }
+        else
+        {
+            UIManager.upgradeUI.gameObject.SetActive(true);
+        }
     }
     public void BntsUnits()
     {
